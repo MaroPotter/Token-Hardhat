@@ -13,4 +13,10 @@ contract Token is ERC20 {
     function decimals() public view override returns (uint8) {
         return decimalPoints;
     }
+
+    function _approve(address spender, uint256 amount) public returns (bool) {
+        uint256 parsedAmount = amount * 10 ** decimalPoints;
+        approve(spender, parsedAmount);
+        return true;
+    }
 }

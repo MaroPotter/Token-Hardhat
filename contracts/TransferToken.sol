@@ -14,7 +14,8 @@ contract TransferToken is Ownable {
     uint amountTokenA;
     uint amountTokenB;
     uint priceTokenB;
-    uint[19] priceString;
+    uint decimalsPrice;
+//    uint[19] priceString;
 
 
 
@@ -22,34 +23,41 @@ contract TransferToken is Ownable {
         tokenAddressA = _tokenAddressA;
         tokenAddressB = _tokenAddressB;
         priceTokenB = _priceTokenB;
+        decimalsPrice = 2;
     }
 
-    function updatePrice(uint _newPriceTokenB) public onlyOwner {
+    function updatePrice(uint _newPriceTokenB, uint _decimalsPrice) public onlyOwner {
         priceTokenB = _newPriceTokenB;
+        decimalsPrice = _decimalsPrice;
     }
 
     function deposit(address _tokenAddress, uint _amount) public onlyOwner {
-        ERC20 token = ERC20(_tokenAddress); //tu był problem
-        token.safeTransferFrom(owner(), address(this), _amount);
-
+        ERC20 token = ERC20(_tokenAddress);
+        uint amount = _amount * 10 ** token.decimals();
+        token.safeTransferFrom(owner(), address(this), amount);
+        // require TO DO
         if(_tokenAddress == tokenAddressA) {
-            amountTokenA += _amount;
+            amountTokenA += amount;
         }
         if(_tokenAddress == tokenAddressB) {
-            amountTokenB += _amount;
+            amountTokenB += amount;
         }
     }
 
     function exchange(address _tokenAddress, uint _amountToken) external {
         ERC20 tokenA = ERC20(tokenAddressA);
         ERC20 tokenB = ERC20(tokenAddressB);
-        uint numberOfDecimals_tokenA = tokenA.decimals();
-        uint numberOfDecimals_tokenB= tokenB.decimals();
-        uint numberOfZerosInPrice = countZeros(priceTokenB);
+        uint decimalsTokenA = tokenA.decimals();
+        uint decimalsTokenB = tokenB.decimals();
+//        uint numberOfZerosInPrice = countZeros(priceTokenB);
+        //require TO DO
 
         if (_tokenAddress == tokenAddressA) {
-            uint exchangedAmountTokenBBeforeRounding = (_amountToken * 10 **(18 - numberOfDecimals_tokenA) / (priceTokenB / 10 **(numberOfZerosInPrice))) / 10 ** (numberOfZerosInPrice - numberOfDecimals_tokenB - 1);
-            uint exchangedAmountTokenB = roundPrice(exchangedAmountTokenBBeforeRounding);
+
+            uint exchangedAmountTokenB = (_amountToken * 10**(decimalsPrice + decimalsTokenB - decimalsTokenA)) / priceTokenB;
+
+//            uint exchangedAmountTokenBBeforeRounding = (_amountToken * 10 **(18 - numberOfDecimals_tokenA) / (priceTokenB / 10 **(numberOfZerosInPrice))) / 10 ** (numberOfZerosInPrice - numberOfDecimals_tokenB - 1);
+//            uint exchangedAmountTokenB = roundPrice(exchangedAmountTokenBBeforeRounding);
             require(exchangedAmountTokenB <= amountTokenB);
 
             tokenA.safeTransferFrom(msg.sender, address(this), _amountToken);
@@ -59,8 +67,10 @@ contract TransferToken is Ownable {
         }
 
         if(_tokenAddress == tokenAddressB ) {
-            uint exchangedAmountTokenABeforeRounding = (_amountToken * 10 **(18-numberOfDecimals_tokenB) * (priceTokenB / 10 **numberOfZerosInPrice)) / (10 ** (18 - numberOfZerosInPrice) * 10 ** (18 - numberOfDecimals_tokenA - 1));
-            uint exchangedAmountTokenA = roundPrice(exchangedAmountTokenABeforeRounding);
+            uint exchangedAmountTokenA = (_amountToken * 10**(decimalsPrice + decimalsTokenA - decimalsTokenB)) * priceTokenB;// DO ZMIANY TRZEBA WYLICZYĆ NA KARTECE DRUGI PRZYPADEK!!!
+
+            //            uint exchangedAmountTokenABeforeRounding = (_amountToken * 10 **(18-numberOfDecimals_tokenB) * (priceTokenB / 10 **numberOfZerosInPrice)) / (10 ** (18 - numberOfZerosInPrice) * 10 ** (18 - numberOfDecimals_tokenA - 1));
+//            uint exchangedAmountTokenA = roundPrice(exchangedAmountTokenABeforeRounding);
             require(exchangedAmountTokenA <= amountTokenA);
 
             tokenB.safeTransferFrom(msg.sender, address(this), _amountToken);
@@ -69,30 +79,5 @@ contract TransferToken is Ownable {
             amountTokenA -= exchangedAmountTokenA;
         }
     }
-    
-    function countZeros(uint _price) private returns (uint) {
-        for(uint i = 19; i > 0; i--) {
-            priceString[i-1] = _price%10;
-            _price /= 10;
-        }
 
-        uint counterZeros = 0;
-        uint j = 18;
-        while(priceString[j] == 0 && j > 0) {
-            counterZeros++;
-            j--;
-        }
-
-        return counterZeros;
-    }
-    
-    function roundPrice(uint _price) private pure returns (uint) {
-        uint lastDigit = _price%10;
-        _price /= 10;
-        if (lastDigit >= 5) {
-            _price += 1;
-        }
-
-        return _price;
-    }
 }

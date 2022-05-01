@@ -20,6 +20,7 @@ import { TypedEventFilter, TypedEvent, TypedListener, OnEvent } from "./common";
 export interface TokenInterface extends utils.Interface {
   contractName: "Token";
   functions: {
+    "_approve(address,uint256)": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
@@ -33,6 +34,10 @@ export interface TokenInterface extends utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
   };
 
+  encodeFunctionData(
+    functionFragment: "_approve",
+    values: [string, BigNumberish]
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -66,6 +71,7 @@ export interface TokenInterface extends utils.Interface {
     values: [string, string, BigNumberish]
   ): string;
 
+  decodeFunctionResult(functionFragment: "_approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -141,6 +147,12 @@ export interface Token extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    _approve(
+      spender: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     allowance(
       owner: string,
       spender: string,
@@ -188,6 +200,12 @@ export interface Token extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  _approve(
+    spender: string,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   allowance(
     owner: string,
@@ -237,6 +255,12 @@ export interface Token extends BaseContract {
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    _approve(
+      spender: string,
+      amount: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     allowance(
       owner: string,
       spender: string,
@@ -310,6 +334,12 @@ export interface Token extends BaseContract {
   };
 
   estimateGas: {
+    _approve(
+      spender: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -359,6 +389,12 @@ export interface Token extends BaseContract {
   };
 
   populateTransaction: {
+    _approve(
+      spender: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     allowance(
       owner: string,
       spender: string,
