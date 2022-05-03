@@ -25,7 +25,7 @@ export interface TransferTokenInterface extends utils.Interface {
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "updatePrice(uint256,uint256)": FunctionFragment;
+    "updatePrice(uint256,uint8)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -133,7 +133,7 @@ export interface TransferToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     updatePrice(
-      _newPriceTokenB: BigNumberish,
+      _priceTokenB: BigNumberish,
       _decimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
@@ -163,7 +163,7 @@ export interface TransferToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   updatePrice(
-    _newPriceTokenB: BigNumberish,
+    _priceTokenB: BigNumberish,
     _decimalsPrice: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
@@ -191,7 +191,7 @@ export interface TransferToken extends BaseContract {
     ): Promise<void>;
 
     updatePrice(
-      _newPriceTokenB: BigNumberish,
+      _priceTokenB: BigNumberish,
       _decimalsPrice: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
@@ -233,7 +233,7 @@ export interface TransferToken extends BaseContract {
     ): Promise<BigNumber>;
 
     updatePrice(
-      _newPriceTokenB: BigNumberish,
+      _priceTokenB: BigNumberish,
       _decimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
@@ -264,7 +264,7 @@ export interface TransferToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     updatePrice(
-      _newPriceTokenB: BigNumberish,
+      _priceTokenB: BigNumberish,
       _decimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
