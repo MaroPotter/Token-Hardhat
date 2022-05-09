@@ -18,10 +18,10 @@ contract TransferToken is Ownable {
     uint8 decimalsPrice;
 
 
-    constructor(address _tokenAddressA, address _tokenAddressB, uint _priceTokenB) {
-        tokenAddressA = _tokenAddressA;
-        tokenAddressB = _tokenAddressB;
-        priceForTokenB = _priceTokenB;
+    constructor(address newTokenAddressA, address newTokenAddressB, uint newPriceTokenB) {
+        tokenAddressA = newTokenAddressA;
+        tokenAddressB = newTokenAddressB;
+        priceForTokenB = newPriceTokenB;
         decimalsPrice = 2;
     }
 
@@ -30,21 +30,21 @@ contract TransferToken is Ownable {
         decimalsPrice = newDecimalsPrice;
     }
 
-    function deposit(address _tokenAddress, uint _amount) public onlyOwner {
-        checkIfTokenAddressIsCorrect(_tokenAddress, "deposit");
+    function deposit(address tokenAddress, uint amount) public onlyOwner {
+        checkIfTokenAddressIsCorrect(tokenAddress, "deposit");
 
-        ERC20 token = ERC20(_tokenAddress);
-        token.safeTransferFrom(owner(), address(this), _amount);
+        ERC20 token = ERC20(tokenAddress);
+        token.safeTransferFrom(owner(), address(this), amount);
 
-        if (_tokenAddress == tokenAddressA) {
-            amountTokenA += _amount;
+        if (tokenAddress == tokenAddressA) {
+            amountTokenA += amount;
         }
-        if (_tokenAddress == tokenAddressB) {
-            amountTokenB += _amount;
+        if (tokenAddress == tokenAddressB) {
+            amountTokenB += amount;
         }
     }
 
-    function exchange(address _tokenAddress, uint _amountToken) external {
+    function exchange(address tokenAddress, uint amountToken) external {
         ERC20 tokenA = ERC20(tokenAddressA);
         ERC20 tokenB = ERC20(tokenAddressB);
         uint exchangedAmountTokenB;
@@ -55,19 +55,16 @@ contract TransferToken is Ownable {
         uint8 sumDecimalsUnsigned;
         int8 sumDecimals = int8(decimalsPrice) + int8(decimalsTokenB) - int8(decimalsTokenA);
 
-        checkIfTokenAddressIsCorrect(_tokenAddress, "exchange");
-
-        if (_tokenAddress == tokenAddressA) {
-
+        checkIfTokenAddressIsCorrect(tokenAddress, "exchange");
+        if (tokenAddress == tokenAddressA) {
             if (sumDecimals >= 0) {
                 sumDecimalsUnsigned = uint8(sumDecimals); // decimalsPrice + decimalsTokenB - decimalsTokenA;
-                exchangedAmountTokenB = (_amountToken * 10 ** sumDecimalsUnsigned) / priceForTokenB;
+                exchangedAmountTokenB = (amountToken * 10 ** sumDecimalsUnsigned) / priceForTokenB;
                 preciseAmountTokenA = (exchangedAmountTokenB * priceForTokenB) / 10 ** sumDecimalsUnsigned;
             }
-
             if(sumDecimals < 0) {
                 sumDecimalsUnsigned = uint8(-sumDecimals); // decimalsTokenA - decimalsPrice - decimalsTokenB;
-                exchangedAmountTokenB = _amountToken / (priceForTokenB * 10 ** sumDecimalsUnsigned);
+                exchangedAmountTokenB = amountToken / (priceForTokenB * 10 ** sumDecimalsUnsigned);
                 preciseAmountTokenA = (exchangedAmountTokenB * priceForTokenB) * 10 ** sumDecimalsUnsigned;
             }
 
@@ -79,30 +76,32 @@ contract TransferToken is Ownable {
             amountTokenB -= exchangedAmountTokenB;
         }
 
-        if (_tokenAddress == tokenAddressB) {
+        if (tokenAddress == tokenAddressB) {
             if(sumDecimals >= 0) {
                 sumDecimalsUnsigned = uint8(sumDecimals); // decimalsPrice + decimalsTokenB - decimalsTokenA;
-                exchangedAmountTokenA = _amountToken * priceForTokenB / (10 ** sumDecimalsUnsigned);
+                exchangedAmountTokenA = amountToken * priceForTokenB / (10 ** sumDecimalsUnsigned);
             }
             if(sumDecimals < 0) {
                 sumDecimalsUnsigned = uint8(-sumDecimals); // decimalsTokenA - decimalsPrice - decimalsTokenB;
-                exchangedAmountTokenA = _amountToken * priceForTokenB * 10 ** sumDecimalsUnsigned;
+                exchangedAmountTokenA = amountToken * priceForTokenB * 10 ** sumDecimalsUnsigned;
             }
 
             require(exchangedAmountTokenA <= amountTokenA);
 
-            tokenB.safeTransferFrom(msg.sender, address(this), _amountToken);
-            amountTokenB += _amountToken;
+            tokenB.safeTransferFrom(msg.sender, address(this), amountToken);
+            amountTokenB += amountToken;
             tokenA.safeTransfer(msg.sender, exchangedAmountTokenA);
             amountTokenA -= exchangedAmountTokenA;
         }
     }
 
-    function checkIfTokenAddressIsCorrect(address _tokenAddress, string memory _callingMethodName) private view {
-        string memory errorText = string.concat("First argument of TransferToken.", _callingMethodName,
+    function checkIfTokenAddressIsCorrect(address tokenAddress, string memory callingMethodName) private view {
+        string memory errorText = string.concat(
+            "First argument of TransferToken.",
+             callingMethodName,
             "() can be either address of token A or address of token B");
 
-        require(_tokenAddress == tokenAddressA || _tokenAddress == tokenAddressB, errorText);
+        require(tokenAddress == tokenAddressA || tokenAddress == tokenAddressB, errorText);
     }
 
 //    function exchangeTokens(address _tokenAddress, uint _preciseAmountToken ,uint _exchangedAmountToken) private {

@@ -110,14 +110,14 @@ export interface TransferToken extends BaseContract {
 
   functions: {
     deposit(
-      _tokenAddress: string,
-      _amount: BigNumberish,
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
     exchange(
-      _tokenAddress: string,
-      _amountToken: BigNumberish,
+      tokenAddress: string,
+      amountToken: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -140,14 +140,14 @@ export interface TransferToken extends BaseContract {
   };
 
   deposit(
-    _tokenAddress: string,
-    _amount: BigNumberish,
+    tokenAddress: string,
+    amount: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   exchange(
-    _tokenAddress: string,
-    _amountToken: BigNumberish,
+    tokenAddress: string,
+    amountToken: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -170,14 +170,14 @@ export interface TransferToken extends BaseContract {
 
   callStatic: {
     deposit(
-      _tokenAddress: string,
-      _amount: BigNumberish,
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
     exchange(
-      _tokenAddress: string,
-      _amountToken: BigNumberish,
+      tokenAddress: string,
+      amountToken: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -210,14 +210,14 @@ export interface TransferToken extends BaseContract {
 
   estimateGas: {
     deposit(
-      _tokenAddress: string,
-      _amount: BigNumberish,
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
     exchange(
-      _tokenAddress: string,
-      _amountToken: BigNumberish,
+      tokenAddress: string,
+      amountToken: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -241,14 +241,14 @@ export interface TransferToken extends BaseContract {
 
   populateTransaction: {
     deposit(
-      _tokenAddress: string,
-      _amount: BigNumberish,
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     exchange(
-      _tokenAddress: string,
-      _amountToken: BigNumberish,
+      tokenAddress: string,
+      amountToken: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
