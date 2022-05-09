@@ -1,4 +1,4 @@
-import '@typechain/hardhat'
+import "@typechain/hardhat";
 import "@nomiclabs/hardhat-ethers";
 import "@nomiclabs/hardhat-waffle";
 
@@ -15,5 +15,5 @@ task(
 );
 
 module.exports = {
-    solidity: "0.8.1",
+    solidity: "0.8.12",
 };

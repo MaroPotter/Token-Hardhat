@@ -1,12 +1,20 @@
 {
+    // Most ts-node options can be specified here using their programmatic names.
+    "ts-node": {
+        // It is faster to skip typechecking.
+        // Remove if you want ts-node to do typechecking.
+        //        "transpileOnly": true,
+
+        "files": true
+    },
     "compilerOptions": {
         "target": "es2018",
         "module": "commonjs",
         "strict": true,
         "esModuleInterop": true,
-        "outDir": "dist"
+        "outDir": "dist",
     },
-    "include": ["./scripts", "./test"],
+    "include": ["./test", "./typechain-types"],
     "files": ["./hardhat.config.ts"],
     "*": ["node_modules/*"]
 }

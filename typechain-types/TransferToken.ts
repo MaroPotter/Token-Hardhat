@@ -133,8 +133,8 @@ export interface TransferToken extends BaseContract {
     ): Promise<ContractTransaction>;
 
     updatePrice(
-      _priceTokenB: BigNumberish,
-      _decimalsPrice: BigNumberish,
+      newPriceForTokenB: BigNumberish,
+      newDecimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
@@ -163,8 +163,8 @@ export interface TransferToken extends BaseContract {
   ): Promise<ContractTransaction>;
 
   updatePrice(
-    _priceTokenB: BigNumberish,
-    _decimalsPrice: BigNumberish,
+    newPriceForTokenB: BigNumberish,
+    newDecimalsPrice: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -191,8 +191,8 @@ export interface TransferToken extends BaseContract {
     ): Promise<void>;
 
     updatePrice(
-      _priceTokenB: BigNumberish,
-      _decimalsPrice: BigNumberish,
+      newPriceForTokenB: BigNumberish,
+      newDecimalsPrice: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -233,8 +233,8 @@ export interface TransferToken extends BaseContract {
     ): Promise<BigNumber>;
 
     updatePrice(
-      _priceTokenB: BigNumberish,
-      _decimalsPrice: BigNumberish,
+      newPriceForTokenB: BigNumberish,
+      newDecimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
@@ -264,8 +264,8 @@ export interface TransferToken extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     updatePrice(
-      _priceTokenB: BigNumberish,
-      _decimalsPrice: BigNumberish,
+      newPriceForTokenB: BigNumberish,
+      newDecimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };
