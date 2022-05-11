@@ -26,6 +26,7 @@ export interface TransferTokenInterface extends utils.Interface {
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updatePrice(uint256,uint8)": FunctionFragment;
+    "withdraw(address,uint256)": FunctionFragment;
   };
 
   encodeFunctionData(
@@ -49,6 +50,10 @@ export interface TransferTokenInterface extends utils.Interface {
     functionFragment: "updatePrice",
     values: [BigNumberish, BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "withdraw",
+    values: [string, BigNumberish]
+  ): string;
 
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "exchange", data: BytesLike): Result;
@@ -65,6 +70,7 @@ export interface TransferTokenInterface extends utils.Interface {
     functionFragment: "updatePrice",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
 
   events: {
     "OwnershipTransferred(address,address)": EventFragment;
@@ -137,6 +143,12 @@ export interface TransferToken extends BaseContract {
       newDecimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    withdraw(
+      tokenAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
   };
 
   deposit(
@@ -168,6 +180,12 @@ export interface TransferToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  withdraw(
+    tokenAddress: string,
+    amount: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   callStatic: {
     deposit(
       tokenAddress: string,
@@ -193,6 +211,12 @@ export interface TransferToken extends BaseContract {
     updatePrice(
       newPriceForTokenB: BigNumberish,
       newDecimalsPrice: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    withdraw(
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
   };
@@ -237,6 +261,12 @@ export interface TransferToken extends BaseContract {
       newDecimalsPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    withdraw(
+      tokenAddress: string,
+      amount: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
   };
 
   populateTransaction: {
@@ -266,6 +296,12 @@ export interface TransferToken extends BaseContract {
     updatePrice(
       newPriceForTokenB: BigNumberish,
       newDecimalsPrice: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    withdraw(
+      tokenAddress: string,
+      amount: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
   };

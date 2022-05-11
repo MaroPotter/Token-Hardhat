@@ -20,7 +20,7 @@ module.exports = {
     "indent": ["error", 4],
     "no-use-before-define": ["error", { "functions": false, "classes": true, "variables": true }],
     "object-curly-spacing": ["error", "never"],
-    "no-multiple-empty-lines": ["error", { "max": 4, "maxEOF": 0 }],
+    "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
     "max-len": ["error", { "code": 120 }]
   },
 };
